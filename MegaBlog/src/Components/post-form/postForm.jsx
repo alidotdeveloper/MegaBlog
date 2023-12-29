@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, input, Select, RTE } from "../index";
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +50,34 @@ function postForm() {
             
         }
     }
+
+    const slugGenerate = useCallback((value) => {
+
+        if( value && typeof value == "string" ) {
+
+           return value
+                .toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w-]+/g, '')
+        
+            
+        }
+            return '';
+    }, [])
+
+
+    useEffect(() => {
+        const subscription = watch((value, { name })=> {
+            if (name === "title") {
+                setValue('slug', slugGenerate(value.title, { shouldvalidate: true }))
+            }
+        })
+        return () => {
+            subscription.unsubscribe();
+        }
+    }, [slugGenerate,value,setValue])
+
+    
 
   return (
     <div>postForm</div>
