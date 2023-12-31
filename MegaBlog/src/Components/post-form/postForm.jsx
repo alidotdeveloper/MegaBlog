@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button, input, Select, RTE } from "../index";
+import { Button, Input, Select, RTE } from "../index";
 import { useDispatch, useSelector } from 'react-redux';
 import AppwriteService from "../../appwrite/auth";
 import { useNavigate } from 'react-router-dom';
@@ -80,7 +80,60 @@ function postForm() {
     
 
   return (
-    <div>postForm</div>
+      <form className='flex flex-wrap'>
+          <div className='w-2/3 px-2'>
+              <Input
+                  label="Title:"
+                  placeholder="Title"
+                  className="mb-4"
+                  {...register("title", { required: 'Please enter a title' })}
+              />
+              <Input
+                  label="Slug:"
+                  placeholder="Slug"
+                  className="mb-4"
+                  {...register, { required: true }}
+                  onInput={(e) => {
+                      setValue("slug", slugGenerate(value.title), {shouldValidate:true})
+                      
+                  }}
+              />
+              <RTE
+                  label="Content"
+                  control={{ control }}
+                  name="content"
+                  defaultvalue={getValues("content")}
+              />
+              <div className='w-1/3 px-2'>
+                  <Input
+                      label="Feature Image"
+                      type="file"
+                      className="mb-4"
+                      accept="image/png, image/jpg, image/jpeg, image/gif"
+                      {...register("image"), { required: !post }}
+                  />
+                  {post && (
+                      <div className='w-full mb-4'>
+                           <img
+                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            alt={post.title}
+                            className="rounded-lg"
+                        />  
+
+                      </div>
+                  )}
+                  <select
+                      option={["active", "inactive"]}
+                      label="Status" className='mb-4'
+                      {...register("status", { required: true })}>
+                  </select>
+                  <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" >{post? "Update" : "Submit" }</Button>
+
+              </div>
+             
+          </div>
+          
+      </form>
   )
 }
 
