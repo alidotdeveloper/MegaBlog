@@ -3,7 +3,6 @@ import { Container, Logo, LogoutButton } from "../index";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
@@ -12,7 +11,6 @@ function Header() {
       name: 'Home', 
       slug: '/',
       active:'true'
-      
     },
     {
       name: 'Login', 

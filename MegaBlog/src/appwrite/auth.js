@@ -57,5 +57,5 @@ export class Authservice {
 }
 
 Authservice = new Authservice();
-
-export default Authservice;
+export const { createAccount, loginAccount, getCurrentUser, logout } =
+  Authservice;

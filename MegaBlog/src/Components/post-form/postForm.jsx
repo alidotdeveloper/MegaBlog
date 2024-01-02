@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Input, Select, RTE } from "../index";
 import { useDispatch, useSelector } from 'react-redux';
-import AppwriteService from "../../appwrite/auth";
+import {Authservice} from '../../appwrite/auth';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -92,9 +92,9 @@ function postForm() {
                   label="Slug:"
                   placeholder="Slug"
                   className="mb-4"
-                  {...register, { required: true }}
+                  {...register("slug", { required:true })}
                   onInput={(e) => {
-                      setValue("slug", slugGenerate(value.title), {shouldValidate:true})
+                      setValue("slug", slugGenerate(e.currentTarget.value), {shouldValidate:true})
                       
                   }}
               />
@@ -110,23 +110,23 @@ function postForm() {
                       type="file"
                       className="mb-4"
                       accept="image/png, image/jpg, image/jpeg, image/gif"
-                      {...register("image"), { required: !post }}
+                      {...register("image", { required: !post })}
                   />
                   {post && (
                       <div className='w-full mb-4'>
                            <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={Authservice.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />  
 
                       </div>
                   )}
-                  <select
+                  <Select
                       option={["active", "inactive"]}
                       label="Status" className='mb-4'
                       {...register("status", { required: true })}>
-                  </select>
+                  </Select>
                   <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" >{post? "Update" : "Submit" }</Button>
 
               </div>

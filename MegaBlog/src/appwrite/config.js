@@ -1,9 +1,9 @@
 import conf from "../config/conf";
 
-import { Client, Account, ID, Databases, Query } from "appwrite";
+import { Client, Account, Storage, ID, Databases, Query } from "appwrite";
 
-export class service {
-  client = new this.client();
+export class Service {
+  client = new Client();
   databases;
   storage;
   constructor() {
@@ -59,7 +59,7 @@ export class service {
       );
       return true;
     } catch (error) {
-      console.log("error wjile deleting post", error);
+      console.log("error while deleting post", error);
       return false;
     }
   }
@@ -117,6 +117,6 @@ export class service {
   }
 }
 
-const service = new service();
+const ServiceInsta = new Service();
 
-export default service;
+export default ServiceInsta;

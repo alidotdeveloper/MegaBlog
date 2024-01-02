@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import  {loginAccount, getCurrentUser} from "../../appwrite/auth";
+import { Link, useNavigate } from 'react-router-dom';
+import  { Authservice} from "../../appwrite/auth";
 import  {login as authlogin} from "../../store/authSlice"
 import { Button,  Input, Logo } from "../index";
 import { useDispatch } from 'react-redux';
