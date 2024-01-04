@@ -8,7 +8,7 @@ export class Authservice {
   constructor() {
     this.client
       .setEndpoint(conf.appwrite_url)
-      .setEndpoint(conf.appwrite_project_id);
+      .setProject(conf.appwrite_project_id);
     this.account = new Account(this.client);
   }
 
@@ -40,9 +40,10 @@ export class Authservice {
 
   async getCurrentUser() {
     try {
-      return await this.account.get();
+      const Account = await this.account.get();
+      return Account;
     } catch (error) {
-      console.log("getting error on gettimg user", error);
+      console.log("getting error on getting user", error);
     }
     return null;
   }

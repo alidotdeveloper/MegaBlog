@@ -5,12 +5,14 @@ import {login,logout} from "./store/authSlice"
 import './App.css';
 import Header from "../src/Components/Header/Header";
 import Footer from "../src/Components/Footer/Footer";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+
+
+
 function App() {
 
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     // Check if user is already logged in
@@ -30,9 +32,9 @@ function App() {
   return !loading ? (<div className='bg-gray-400 flex-wrap content-between min-h-screen'>
 
     <div className='w-full block'></div>
-    <Header/>
+    <Header/>  
     <main>
-
+      Todo : <Outlet/>
     </main>
     <Footer/>
 
