@@ -1,5 +1,4 @@
 import conf from "../config/conf";
-
 import { Client, Account, ID } from "appwrite";
 
 export class Authservice {
@@ -7,11 +6,10 @@ export class Authservice {
   account;
   constructor() {
     this.client
-      .setEndpoint(conf.appwrite_url)
-      .setProject(conf.appwrite_project_id);
+      .setEndpoint("https://cloud.appwrite.io/v1")
+      .setProject("657c886c4b12d971d777");
     this.account = new Account(this.client);
   }
-
   async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(

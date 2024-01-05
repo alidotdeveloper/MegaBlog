@@ -8,8 +8,8 @@ export class Service {
   storage;
   constructor() {
     this.client
-      .setEndpoint(conf.appwrite_url)
-      .setEndpoint(conf.appwrite_project_id);
+      .setEndpoint("https://cloud.appwrite.io/v1")
+      .setProject("657c886c4b12d971d777");
 
     this.databases = new Databases(this.client);
     this.storage = new Storage(this.client);

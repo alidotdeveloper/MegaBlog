@@ -7,33 +7,33 @@ import { Container, Button } from "../Components";
 
 
 function post() {
-    const [posts, setPosts] = useState('');
-    const navigate = useNavigate();
-    const { slug } = useParams();
-    const userData = useSelector(state => state.auth.userData);
+  const [posts, setPosts] = useState('');
+  const navigate = useNavigate();
+  const { slug } = useParams();
+  const userData = useSelector(state => state.auth.userData);
 
-    const isAuthor = posts && userData?.posts.userId === userData.$id;
-    useEffect(() => {
-      if (slug) {
-        const post = appwriteService.getPost(slug)
-        if (post) {
-          setPosts(post)
-        } else {
-          navigate('/')
-        }
+  const isAuthor = posts && userData?.posts.userId === userData.$id;
+  useEffect(() => {
+    if (slug) {
+      const post =  appwriteService.getPost(slug)
+      if (post) {
+        setPosts(post)
+      } else {
+        navigate('/')
       }
+    }
       
 
-    }, [navigate, slug])
+  }, [navigate, slug])
   
-    const deletePost = async((postId) => {
+  const deletePost = async((postId) => {
 
-      const delPost = await appwriteService.deletePost(posts.$id)
-      if (delPost) {
-        appwriteService.deleteImage(postId)
-        navigate('/');
-      }
-    })
+    const delPost = appwriteService.deletePost(posts.$id)
+    if (delPost) {
+      appwriteService.deleteImage(postId)
+      navigate('/');
+    }
+  })
 
   return posts ? (
     <div className='py8'>
@@ -44,16 +44,15 @@ function post() {
            
             src={appwriteService.getFilePreview(posts.featureImage)}
             alt={posts.title}
-            className= "rounded-xl"
-          
-            
+            className="rounded-xl"
+  
           />
           {isAuthor && (<div className='absoulte right-6 top-6'>
             <Link to={`/edit/${posts.Id}`} />
             <Button className='mr-3' bgColor="bg-red-500">
               Edit
             </Button>
-            <Button bgColor="bg-red-500" onClick = {deletePost} >
+            <Button bgColor="bg-red-500" onClick={deletePost} >
               Delete
             </Button>
  
@@ -75,6 +74,9 @@ function post() {
 
     </div>
   )
-}
+: null;
+    
+  }
+
 
 export default post

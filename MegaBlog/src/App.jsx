@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { Authservice } from './appwrite/auth';
 import {login,logout} from "./store/authSlice"
@@ -6,6 +6,7 @@ import './App.css';
 import Header from "../src/Components/Header/Header";
 import Footer from "../src/Components/Footer/Footer";
 import { Outlet } from 'react-router-dom';
+import Home from './pages/Home';
 
 
 
@@ -18,6 +19,7 @@ function App() {
     // Check if user is already logged in
     Authservice.getCurrentUser()
       .then((userData) => {
+        console.log("userdata:", userData);
         if (userData) {
           dispatch(login({userData}))
         } else {
@@ -34,7 +36,8 @@ function App() {
     <div className='w-full block'></div>
     <Header/>  
     <main>
-      Todo : <Outlet/>
+      Todo : <Outlet />
+      <Home />
     </main>
     <Footer/>
 
