@@ -16,7 +16,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check if user is already logged in
+  
     Authservice.getCurrentUser()
       .then((userData) => {
         console.log("userdata:", userData);

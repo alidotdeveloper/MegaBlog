@@ -66,8 +66,8 @@ export class Service {
   async getPost(slug) {
     try {
       return await this.databases.getDocument(
-        conf.appwrite_db_id,
-        conf.appwrite_collection_id,
+        "https://cloud.appwrite.io/v1",
+        "657c886c4b12d971d777",
         slug
       );
     } catch (error) {
@@ -78,8 +78,8 @@ export class Service {
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
       return await this.databases.listDocuments(
-        conf.appwrite_db_id,
-        conf.appwrite_collection_id,
+        "https://cloud.appwrite.io/v1",
+        "657c886c4b12d971d777",
         queries
       );
     } catch (error) {
