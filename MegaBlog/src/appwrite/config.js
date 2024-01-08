@@ -1,7 +1,15 @@
 import conf from "../config/conf";
 
-import { Client, Account, Storage, ID, Databases, Query } from "appwrite";
-
+import {
+  Client,
+  Account,
+  Storage,
+  ID,
+  Databases,
+  Query,
+  Teams,
+} from "appwrite";
+const teams = new Teams(client);
 export class Service {
   client = new Client();
   databases;
@@ -65,11 +73,7 @@ export class Service {
   }
   async getPost(slug) {
     try {
-      return await this.databases.getDocument(
-        "https://cloud.appwrite.io/v1",
-        "657c886c4b12d971d777",
-        slug
-      );
+      return await this.databases.getDocument("657c886c4b12d971d777", slug);
     } catch (error) {
       console.log("error while getting post", error);
       return false;
@@ -78,7 +82,6 @@ export class Service {
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
       return await this.databases.listDocuments(
-        "https://cloud.appwrite.io/v1",
         "657c886c4b12d971d777",
         queries
       );
