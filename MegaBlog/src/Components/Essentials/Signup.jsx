@@ -50,7 +50,7 @@ function Signup() {
                     </Link>
                   </p>
                   {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-                  <form onSubmit={handleSubmit(signup)}>
+                  <form onSubmit={handleSubmit(signup)} lassName='mt-5'>
                       <div className='space-y-5'>
                           <Input
                               label="Full Name: "
