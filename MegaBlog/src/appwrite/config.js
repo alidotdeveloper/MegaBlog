@@ -9,7 +9,8 @@ import {
   Query,
   Teams,
 } from "appwrite";
-const teams = new Teams(client);
+
+const teams = new Teams(Client);
 export class Service {
   client = new Client();
   databases;
@@ -18,10 +19,10 @@ export class Service {
     this.client
       .setEndpoint("https://cloud.appwrite.io/v1")
       .setProject("657c886c4b12d971d777");
-
     this.databases = new Databases(this.client);
     this.storage = new Storage(this.client);
   }
+
   async createPost({ title, slug, content, featuredimage, userId, statusbar }) {
     try {
       return await this.databases.createDocument(
@@ -55,7 +56,8 @@ export class Service {
         }
       );
     } catch (error) {
-      console.log("error while updating...");
+      console.log("error while updating...", error);
+      throw error;
     }
   }
   async deletePost({ slug }) {

@@ -11,7 +11,7 @@ function Button({
 }) {
 
     return (
-        <button className={`px-4 py-3 rounded-lg ${bgColor} ${textColor} ${className} {...props}`
+        <button className={`px-7 py-7 rounded-lg ${bgColor} ${textColor} ${className} {...props}`
 } >
           {Children}
     </button>

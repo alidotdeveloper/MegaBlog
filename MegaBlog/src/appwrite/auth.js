@@ -19,6 +19,7 @@ export class Authservice {
         name
       );
       if (userAccount) {
+        const session = await this.client.account.create;
         return this.loginAccount(email, password);
       } else {
         return userAccount;
