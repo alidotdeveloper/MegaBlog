@@ -1,5 +1,6 @@
 import conf from "../config/conf";
-import { Client, Account, ID } from "appwrite";
+import { Client, Account } from "appwrite";
+import { v4 as uuidv4 } from "uuid";
 
 export class Authservice {
   client = new Client();
@@ -12,15 +13,22 @@ export class Authservice {
   }
   async createAccount({ email, password, name }) {
     try {
+      const userId = uuidv4();
       const userAccount = await this.account.create(
-        ID.unique,
+        userId,
         email,
         password,
         name
       );
+
       if (userAccount) {
-        const session = await this.client.account.create;
-        return this.loginAccount(email, password);
+        const session = await this.client.account.createSession(
+          "email",
+          email,
+          password
+        );
+        console.log("Session:", session);
+        return session;
       } else {
         return userAccount;
       }

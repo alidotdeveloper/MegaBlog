@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 
 function Signup() {
     const dispatch = useDispatch();
-    const [error, seterror] = useState('');
+    const [err, seterror] = useState('');
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 
@@ -27,7 +27,8 @@ function Signup() {
             }
             
         } catch (error) {
-            seterror(error)
+            console.error("Signup Error:", error);
+            seterror(error.message || "An error occurred during signup.");
             
         }
     }
@@ -41,16 +42,16 @@ function Signup() {
                   </div>
                   <h2 className="text-center text-2xl font-bold leading-tight">SignUp to create your account</h2>
       <p className="mt-2 mb-2 text-center text-base text-black/60">
-                    Already have any account?&nbsp;
+                    Already have any account? &nbsp;
                     <Link
                         to="/login"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
                     >
-                        Sign Up
+                        Sign In
                     </Link>
                   </p>
-                  {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-                  <form onSubmit={handleSubmit(signup)} lassName='mt-5'>
+            
+                  <form onSubmit={handleSubmit(signup)} className='mt-5'>
                       <div className='space-y-5'>
                           <Input
                               label="Full Name: "
@@ -65,10 +66,7 @@ function Signup() {
                             placeholder="Enter Your Email"
                             type="email"
                             {...register("email", {
-                            required: true, validate: {
-                            matchPatern: (value) =>
-                            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)||  "Email address must be a valid address",
-              } })}
+                            required: true })}
                           />
                           <Input
                               label="password"
@@ -82,12 +80,7 @@ function Signup() {
                           <Button type='submit' className='w-full'>Create Account</Button>
 
                       </div>
-                  </form>
-                 
-                  
-
-
-                  
+                  </form>                  
          </div>
           </div>
           
