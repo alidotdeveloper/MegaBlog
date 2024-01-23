@@ -86,7 +86,7 @@ function postForm() {
     
 
   return (
-      <form className='flex flex-wrap'>
+      <form className='flex flex-wrap' onSubmit={submit}>
           <div className='w-2/3 px-2'>
               <Input
                   label="Title:"
