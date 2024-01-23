@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import appwriteService from "../appwrite/config";
-import { postForm } from '../Components';
+import { PostForm } from '../Components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container } from 'postcss';
 import { data } from 'autoprefixer';
@@ -28,7 +28,7 @@ function EditPost() {
     return data ? (
         <div className='py-8'>
             <Container>
-                <postForm post={data} />
+                <PostForm post={data} />
     </Container>
 </div>) : null
 

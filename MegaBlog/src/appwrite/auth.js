@@ -33,7 +33,7 @@ export class Authservice {
         return userAccount;
       }
     } catch (error) {
-      throw error;
+      console.error("Error creating session:", error);
     }
   }
 

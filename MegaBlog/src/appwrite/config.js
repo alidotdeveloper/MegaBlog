@@ -122,6 +122,6 @@ export class Service {
   }
 }
 
-const ServiceInsta = new Service();
+const AppwriteService = new Service();
 
-export default ServiceInsta;
+export default AppwriteService;

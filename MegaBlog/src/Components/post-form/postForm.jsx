@@ -4,18 +4,20 @@ import { Button, Input, Select, RTE } from "../index";
 import { useDispatch, useSelector } from 'react-redux';
 import {Authservice} from '../../appwrite/auth';
 import { useNavigate } from 'react-router-dom';
-
+import post from '../../pages/post';
+import AppwriteService  from "../../../src/appwrite/config";
 
 function postForm() {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
-        title: post?.title || "",
-        slug: post?.slug || "",
-        content: post?.content || "",
-        status: post?.status|| "active"
-        
+        defaultValues: {
+            title: post?.title || "",
+            slug: post?.slug || "",
+            content: post?.content || "",
+            status: post?.status || "active"
+        }
     });
     const navigate = useNavigate();
-    const userData = useSelector(state => state.user.userData);
+    const userData = useSelector(state => state.auth.userData || {} ) ;
 
     const submit = async (data) => {
         if (post) {
@@ -34,10 +36,11 @@ function postForm() {
                     
                     if (file) {
                         const fileId = file.$id
-                        data.featuredImage = fileId
+                        data.featuredImage = fileId;
+                        const userId = userData ? userData.$id : undefined;
                         const dbPost = await AppwriteService.createPost({
                             ...data,
-                            userId: userData.$id
+                            userId: userId
                         })
                         if (dbPost) {
                             navigate(`/post/${dbPost.$id}`)
@@ -55,7 +58,7 @@ function postForm() {
 
         if( value && typeof value == "string" ) {
 
-           return value
+           return value.title
                 .toLowerCase()
                 .replace(/\s+/g, '-')
                 .replace(/[^\w-]+/g, '')
@@ -67,15 +70,18 @@ function postForm() {
 
 
     useEffect(() => {
-        const subscription = watch((value, { name })=> {
+        const subscription = watch((value, { name }) => {
+            console.log("watching changes:", value)
             if (name === "title") {
-                setValue('slug', slugGenerate(value.title, { shouldvalidate: true }))
+                const slugValue = value.title ? slugGenerate(value.title) : '';
+                setValue('slug', slugValue, { shouldvalidate: true });
             }
+           
         })
         return () => {
             subscription.unsubscribe();
         }
-    }, [slugGenerate,value,setValue])
+    }, [slugGenerate,watch,setValue])
 
     
 
@@ -115,7 +121,7 @@ function postForm() {
                   {post && (
                       <div className='w-full mb-4'>
                            <img
-                            src={Authservice.getFilePreview(post.featuredImage)}
+                            src={AppwriteService.getFilePreview('657c8be4a1f331738cf3')}
                             alt={post.title}
                             className="rounded-lg"
                         />  
