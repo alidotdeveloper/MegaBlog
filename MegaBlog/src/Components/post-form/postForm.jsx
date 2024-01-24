@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { Button, Input, Select, RTE } from "../index";
-import { useDispatch, useSelector } from 'react-redux';
-import {Authservice} from '../../appwrite/auth';
-import { useNavigate } from 'react-router-dom';
-import post from '../../pages/post';
+import React, { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Button, Input, RTE, Select } from "..";
+
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import AppwriteService  from "../../../src/appwrite/config";
 
-function postForm() {
+function postForm({post}) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || "",
-            slug: post?.slug || "",
+            slug: post?.$id|| "",
             content: post?.content || "",
             status: post?.status || "active"
         }
     });
     const navigate = useNavigate();
-    const userData = useSelector(state => state.auth.userData || {} ) ;
+    const userData = useSelector((state )=> state.auth.userData || {} ) ;
 
     const submit = async (data) => {
         if (post) {
@@ -32,7 +32,7 @@ function postForm() {
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`)
         } else {
-                    const file = data.image[0] ? AppwriteService.uploadImage(data.image[0]) : null
+                    const file = data.image[0] ? await AppwriteService.uploadImage(data.image[0]) : null
                     
                     if (file) {
                         const fileId = file.$id
@@ -86,13 +86,13 @@ function postForm() {
     
 
   return (
-      <form className='flex flex-wrap' onSubmit={submit}>
+      <form className='flex flex-wrap' onSubmit={handleSubmit(submit)}>
           <div className='w-2/3 px-2'>
               <Input
                   label="Title:"
                   placeholder="Title"
                   className="mb-4"
-                  {...register("title", { required: 'Please enter a title' })}
+                  {...register("title", { required: true })}
               />
               <Input
                   label="Slug:"
@@ -105,11 +105,14 @@ function postForm() {
                   }}
               />
               <RTE
-                  label="Content"
-                  control={{ control }}
+                  label="Content :"
+                  className= "nline-block mb-1 pl-1 text-black"
+                  control={ control }
                   name="content"
-                  defaultvalue={getValues("content")}
+                  defaultValue={getValues("content")}
               />
+              </div>
+       
               <div className='w-1/3 px-2'>
                   <Input
                       label="Feature Image"
@@ -121,7 +124,7 @@ function postForm() {
                   {post && (
                       <div className='w-full mb-4'>
                            <img
-                            src={AppwriteService.getFilePreview('657c8be4a1f331738cf3')}
+                            src={AppwriteService.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />  
@@ -129,15 +132,15 @@ function postForm() {
                       </div>
                   )}
                   <Select
-                      option={["active", "inactive"]}
-                      label="Status" className='mb-4'
+                      options={["active", "inactive"]}
+                      label="Status" className='mb-4 px-4.5 py-2.5 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 '
                       {...register("status", { required: true })}>
                   </Select>
                   <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" >{post? "Update" : "Submit" }</Button>
 
               </div>
              
-          </div>
+      
           
       </form>
   )

@@ -12,19 +12,21 @@ function Login() {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, seterror] = useState("");
-
   const login = async (data) => {
     try {
       const session = await Authservice.loginAccount(data);
       if (session) {
         const userData = await Authservice.getCurrentUser()
+        console.log('user', userData);
         if (userData) {
           dispatch(authlogin(userData));
+          console.log('user approved');
           navigte('/');
         }
       }
     } catch (error) {
-      seterror(error);
+      console.error("error is ", error);
+      throw error;
       
     }
     
@@ -48,8 +50,10 @@ function Login() {
                         Sign Up
                     </Link>
         </p>
-        {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-        <form onSubmit={handleSubmit(login)} className='mt-3'>
+        { 
+          { error } && <p className='text-red-600 mt-8 text-center'>{error}</p>
+        }
+        <form onSubmit= {  handleSubmit(login) } className='mt-3'>
           <div className='space-y-5'>
             <Input
               label="Email"
