@@ -12,7 +12,7 @@ function post() {
   const { slug } = useParams();
   const userData = useSelector(state => state.auth.userData);
 
-  const isAuthor = posts && userData?.posts.userId === userData.$id;
+  const isAuthor = posts && userData? posts.userId === userData.$id :false
   useEffect(() => {
     if (slug) {
       const post =  appwriteService.getPost(slug)
@@ -26,7 +26,7 @@ function post() {
 
   }, [navigate, slug])
   
-  const deletePost = async((postId) => {
+  const deletePost = ((postId) => {
 
     const delPost = appwriteService.deletePost(posts.$id)
     if (delPost) {

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
-
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -18,56 +17,51 @@ function postForm({post}) {
     });
     const navigate = useNavigate();
     const userData = useSelector((state )=> state.auth.userData || {} ) ;
-
     const submit = async (data) => {
         if (post) {
+            const file = data.image[0] ? await AppwriteService.uploadFile(data.image[0]) : null;
 
-            const file = data.image[0] ? AppwriteService.uploadImage(data.image[0]) : null
-            
             if (file) {
                 AppwriteService.deleteImage(post.featuredImage);
+            }
 
-                const dbPost = AppwriteService.updatePost(post.$id, { ...data, featuredImage: file ? file.$id : undefined })
+            const dbPost = await AppwriteService.updatePost(post.$id, {
+                ...data,
+                featuredImage: file ? file.$id : undefined,
+            });
+
+            if (dbPost) {
+                navigate(`/post/${dbPost.$id}`);
+            }
+        } else {
+            const file = await AppwriteService.uploadImage(data.image[0]);
+
+            if (file) {
+                const fileId = file.$id;
+                data.featuredImage = fileId;
+                const dbPost = await AppwriteService.createPost({ ...data, userId: userData.$id });
 
                 if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`)
-        } else {
-                    const file = data.image[0] ? await AppwriteService.uploadImage(data.image[0]) : null
-                    
-                    if (file) {
-                        const fileId = file.$id
-                        data.featuredImage = fileId;
-                        const userId = userData ? userData.$id : undefined;
-                        const dbPost = await AppwriteService.createPost({
-                            ...data,
-                            userId: userId
-                        })
-                        if (dbPost) {
-                            navigate(`/post/${dbPost.$id}`)
-                        }
-                    }
-        
+                    navigate(`/post/${dbPost.$id}`);
                 }
-                
             }
-            
         }
-    }
-
+    };
+    
     const slugGenerate = useCallback((value) => {
 
-        if( value && typeof value == "string" ) {
+            if (value && typeof value == "string") {
 
-           return value.title
-                .toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w-]+/g, '')
+                return value
+                    .toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w-]+/g, '')
         
             
-        }
+            }
             return '';
-    }, [])
-
+        }, [])
+    
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
@@ -136,7 +130,7 @@ function postForm({post}) {
                       label="Status" className='mb-4 px-4.5 py-2.5 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 '
                       {...register("status", { required: true })}>
                   </Select>
-                  <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" >{post? "Update" : "Submit" }</Button>
+                  <Button type="submit"  bgColor={post ? "bg-green-500" : undefined} className="w-full" >{post? "Update" : "Submit" }</Button>
 
               </div>
              

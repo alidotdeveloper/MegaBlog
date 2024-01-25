@@ -12,15 +12,32 @@ function RTE({name, control, label, defaultvalue  = ""}) {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                       <Editor 
+                      apiKey='et5auu1b0ioa9pk6m8hqcfd1d6hsxurt9njus4qzlz9qe888'
                           initialValue={defaultvalue}
-                          value={value ?? ''}
                           init={{
                               height: 500,
                               menubar: true,
                               plugins: [
-                                'advlist autolink lists link image charmap print preview anchor',
-                                'searchreplace visualblocks code fullscreen',
-                                'insertdatetime media table paste code help wordcount'
+                                "image",
+                                "advlist",
+                                "autolink",
+                                "lists",
+                                "link",
+                                "image",
+                                "charmap",
+                                "preview",
+                                "anchor",
+                                "searchreplace",
+                                "visualblocks",
+                                "code",
+                                "fullscreen",
+                                "insertdatetime",
+                                "media",
+                                "table",
+                                "code",
+                                "help",
+                                "wordcount",
+                                "anchor",
                               ],
                               toolbar: 'undo redo | formatselect | ' +
                               'bold italic backcolor | alignleft aligncenter ' +

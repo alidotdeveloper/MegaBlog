@@ -23,22 +23,21 @@ export class Service {
     this.storage = new Storage(this.client);
   }
 
-  async createPost({ title, slug, content, featuredimage, userId, statusbar }) {
+  async createPost({ title, slug, content, userId, statusbar }) {
     try {
       return await this.databases.createDocument(
-        conf.appwrite_db_id,
-        conf.appwrite_collection_id,
+        "657c891b0065fa7a6a86",
+        "657c89409e291365ef8e",
         slug,
         {
-          title,
-          content,
-          featuredimage,
-          statusbar,
-          userId,
+          TITLE: title,
+          CONTENT: content,
+          status: statusbar,
+          user_id: userId,
         }
       );
     } catch (error) {
-      console.log("error while crating");
+      console.log("error while creating", error);
     }
   }
 
@@ -96,8 +95,9 @@ export class Service {
   // file upload
   async uploadImage(file) {
     try {
+      console.log("id oof bucket is:", conf.appwrite_bucket_id);
       return await this.storage.createFile(
-        conf.appwrite_bucket_id,
+        "657c8be4a1f331738cf3",
         ID.unique(),
         file
       );
