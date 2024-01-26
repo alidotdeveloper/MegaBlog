@@ -5,25 +5,30 @@ import { parse } from 'dotenv';
 import { useSelector } from 'react-redux';
 import { Container, Button } from "../Components";
 
-
 function post() {
   const [posts, setPosts] = useState('');
   const navigate = useNavigate();
   const { slug } = useParams();
   const userData = useSelector(state => state.auth.userData);
-
   const isAuthor = posts && userData? posts.userId === userData.$id :false
   useEffect(() => {
-    if (slug) {
-      const post =  appwriteService.getPost(slug)
-      if (post) {
-        setPosts(post)
-      } else {
-        navigate('/')
+    const fetchpost = async() => {
+      if(slug) {
+        try {
+          const post = await appwriteService.getPost(slug)
+          if (post) {
+            setPosts(post)
+          } else {
+            navigate('/')
+          }
+        }
+        catch (err) {
+          console.error('Error fetching post:', err);
+          navigate('/');
+        }
       }
     }
-      
-
+    fetchpost();
   }, [navigate, slug])
   
   const deletePost = ((postId) => {
@@ -40,13 +45,12 @@ function post() {
      
       <Container>
         <div className='"w-full flex justify-center mb-4 relative border rounded-xl p-2'>
-          <Img
-           
-            src={appwriteService.getFilePreview(posts.featureImage)}
-            alt={posts.title}
+          <img
+            src={appwriteService.getFilePreview(posts.$id)}
+            alt={ posts.TITLE}
             className="rounded-xl"
-  
           />
+
           {isAuthor && (<div className='absoulte right-6 top-6'>
             <Link to={`/edit/${posts.Id}`} />
             <Button className='mr-3' bgColor="bg-red-500">
@@ -55,18 +59,14 @@ function post() {
             <Button bgColor="bg-red-500" onClick={deletePost} >
               Delete
             </Button>
- 
-          </div>
-          
+          </div> 
           )}
 
         </div>
         <div className='w-full mb-6'>
 
-          <h1 className='text-2xl font-bold'> {post.title}</h1>
-          <div className='broswer-css'>
-            {parse(posts.content)}
-          </div>
+          <h1 className='text-2xl font-bold'> {posts.title}</h1>
+          <div className='broswer-css'> {posts.content} </div>
 
         </div>
         

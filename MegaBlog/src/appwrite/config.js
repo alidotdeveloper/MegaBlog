@@ -74,7 +74,11 @@ export class Service {
   }
   async getPost(slug) {
     try {
-      return await this.databases.getDocument("657c886c4b12d971d777", slug);
+      return await this.databases.getDocument(
+        "657c891b0065fa7a6a86",
+        "657c89409e291365ef8e",
+        slug
+      );
     } catch (error) {
       console.log("error while getting post", error);
       return false;
@@ -83,7 +87,8 @@ export class Service {
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
       return await this.databases.listDocuments(
-        "657c886c4b12d971d777",
+        "657c891b0065fa7a6a86",
+        "657c89409e291365ef8e",
         queries
       );
     } catch (error) {
@@ -112,13 +117,17 @@ export class Service {
       await this.storage.deleteFile(conf.appwrite_bucket_id, fileId);
       return true;
     } catch (error) {
-      console.log("error in filr delete", error);
+      console.log("error in file delete", error);
       return false;
     }
   }
 
   getFilePreview(fileId) {
-    return this.storage.getFilePreview(conf.appwrite_bucket_id, fileId);
+    try {
+      return this.storage.getFilePreview("657c8be4a1f331738cf3", fileId);
+    } catch (error) {
+      console.log("eror while preveing", error);
+    }
   }
 }
 
