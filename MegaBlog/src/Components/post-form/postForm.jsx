@@ -10,7 +10,7 @@ function postForm({post}) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || "",
-            slug: post?.$id|| "",
+            slug: post?.$id || "",
             content: post?.content || "",
             status: post?.status || "active"
         }
@@ -19,15 +19,17 @@ function postForm({post}) {
     const userData = useSelector((state )=> state.auth.userData || {} ) ;
     const submit = async (data) => {
         if (post) {
+           
             const file = data.image[0] ? await AppwriteService.uploadFile(data.image[0]) : null;
-
+           
+          
             if (file) {
-                AppwriteService.deleteImage(post.featuredImage);
+                AppwriteService.deleteImage(post.featuredimage);
             }
 
             const dbPost = await AppwriteService.updatePost(post.$id, {
                 ...data,
-                featuredImage: file ? file.$id : undefined,
+                feature_key: file ? file.$id : undefined,
             });
 
             if (dbPost) {
@@ -37,14 +39,19 @@ function postForm({post}) {
             const file = await AppwriteService.uploadImage(data.image[0]);
 
             if (file) {
+                console.log(file)
                 const fileId = file.$id;
                 data.featuredImage = fileId;
-                const dbPost = await AppwriteService.createPost({ ...data, userId: userData.$id });
-
+                const dbPost = await AppwriteService.createPost({ ...data,fileId, userId: userData.$id });
+                
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
+                    console.log("posts crteated successfully")
+                } 
+                else(err)=> {
+                    alert('Something went wrong while creating the post', err);
                 }
-            }
+            } 
         }
     };
     
@@ -118,7 +125,7 @@ function postForm({post}) {
                   {post && (
                       <div className='w-full mb-4'>
                            <img
-                            src={AppwriteService.getFilePreview(post.featuredImage)}
+                            src={AppwriteService.getFilePreview(file.$id)}
                             alt={post.title}
                             className="rounded-lg"
                         />  

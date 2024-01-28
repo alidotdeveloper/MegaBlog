@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Container, Button } from "../Components";
 
 function post() {
-  const [posts, setPosts] = useState('');
+  const [posts, setPosts] = useState(null);
   const navigate = useNavigate();
   const { slug } = useParams();
   const userData = useSelector(state => state.auth.userData);
@@ -18,6 +18,7 @@ function post() {
           const post = await appwriteService.getPost(slug)
           if (post) {
             setPosts(post)
+            console.log("posts id is : ", post.$id);
           } else {
             navigate('/')
           }
@@ -33,7 +34,7 @@ function post() {
   
   const deletePost = ((postId) => {
 
-    const delPost = appwriteService.deletePost(posts.$id)
+    const delPost = appwriteService.deletePost(posts.feature_key)
     if (delPost) {
       appwriteService.deleteImage(postId)
       navigate('/');
@@ -46,7 +47,7 @@ function post() {
       <Container>
         <div className='"w-full flex justify-center mb-4 relative border rounded-xl p-2'>
           <img
-            src={appwriteService.getFilePreview(posts.$id)}
+            src={appwriteService.getFilePreview(posts.feature_key)}
             alt={ posts.TITLE}
             className="rounded-xl"
           />
