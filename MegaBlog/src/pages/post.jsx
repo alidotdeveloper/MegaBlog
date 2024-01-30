@@ -7,6 +7,7 @@ import { Container, Button } from "../Components";
 
 function post() {
   const [posts, setPosts] = useState(null);
+  const [url, seturl] = useState('');
   const navigate = useNavigate();
   const { slug } = useParams();
   const userData = useSelector(state => state.auth.userData);
@@ -19,6 +20,14 @@ function post() {
           if (post) {
             setPosts(post)
             console.log("posts id is : ", post.$id);
+            try {
+              const imageurl = await appwriteService.getFilePreview(post.feature_key)
+              console.log(imageurl);
+              seturl(imageurl)
+
+            } catch (err){
+              console.log("getting erorr in catch og getting imageurl", err);
+            }
           } else {
             navigate('/')
           }
@@ -45,12 +54,13 @@ function post() {
     <div className='py8'>
      
       <Container>
-        <div className='"w-full flex justify-center mb-4 relative border rounded-xl p-2'>
+        <div className=' flex justify-center mb-4 relative border rounded-xl p-2 content-center object-center w-full '>
           <img
-            src={appwriteService.getFilePreview(posts.feature_key)}
-            alt={ posts.TITLE}
-            className="rounded-xl"
+            src={url}
+            alt={posts.TITLE}
+            className="rounded-xl w-{s} "
           />
+          
 
           {isAuthor && (<div className='absoulte right-6 top-6'>
             <Link to={`/edit/${posts.Id}`} />
@@ -66,8 +76,8 @@ function post() {
         </div>
         <div className='w-full mb-6'>
 
-          <h1 className='text-2xl font-bold'> {posts.title}</h1>
-          <div className='broswer-css'> {posts.content} </div>
+          <h1 className='text-2xl font-bold'> {posts.TITLE}</h1>
+          <div className='broswer-css'> {posts.CONTENT} </div>
 
         </div>
         

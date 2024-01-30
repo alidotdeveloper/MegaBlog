@@ -10,8 +10,7 @@ import Select from "./Essentials/select";
 import Signup from "./Essentials/Signup";
 import Container from "../Components/container/container";
 import PostForm from "./post-form/PostForm";
-import postCard from "../Components/Essentials/postCard";
-import select from "./Essentials/select";
+import PostCard from "../Components/Essentials/postCard";
 
 export {
   Header,
@@ -25,6 +24,6 @@ export {
   Signup,
   Login,
   PostForm,
-  postCard,
+  PostCard,
   Select,
 };

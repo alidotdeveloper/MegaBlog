@@ -123,11 +123,11 @@ export class Service {
     }
   }
 
-  getFilePreview(fileId) {
+  async getFilePreview(fileId) {
     try {
       return this.storage.getFilePreview("657c8be4a1f331738cf3", fileId);
     } catch (error) {
-      console.log("eror while preveing", error);
+      console.log("eror while prevewing", error);
     }
   }
 }
