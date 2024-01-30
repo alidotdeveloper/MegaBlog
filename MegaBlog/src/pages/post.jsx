@@ -11,14 +11,21 @@ function post() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const userData = useSelector(state => state.auth.userData);
-  const isAuthor = posts && userData? posts.userId === userData.$id :false
+  
+
+  
   useEffect(() => {
+    console.log(userData.$id);
+    console.log("details:",posts);
+
     const fetchpost = async() => {
       if(slug) {
         try {
           const post = await appwriteService.getPost(slug)
           if (post) {
+            console.log("single post here", post);
             setPosts(post)
+            
             console.log("posts id is : ", post.$id);
             try {
               const imageurl = await appwriteService.getFilePreview(post.feature_key)
@@ -40,7 +47,7 @@ function post() {
     }
     fetchpost();
   }, [navigate, slug])
-  
+  const isAuthor = posts && userData ? posts.user_id === userData.$id : false
   const deletePost = ((postId) => {
 
     const delPost = appwriteService.deletePost(posts.feature_key)
@@ -62,7 +69,7 @@ function post() {
           />
           
 
-          {isAuthor && (<div className='absoulte right-6 top-6'>
+          {  isAuthor&& (<div className='absoulte right-6 top-6'>
             <Link to={`/edit/${posts.Id}`} />
             <Button className='mr-3' bgColor="bg-red-500">
               Edit

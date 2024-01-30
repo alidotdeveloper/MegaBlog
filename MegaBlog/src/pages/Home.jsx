@@ -4,7 +4,7 @@ import appwriteService from "../appwrite/config";
 import PostCard from '../Components/Essentials/postCard';
 
 function Home() {
-    const [posts, setPosts] = useState(null)
+    const [posts, setPosts] = useState([])
     useEffect(() => {
         appwriteService.getPosts(([])).then((post) => {
           
