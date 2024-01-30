@@ -37,7 +37,6 @@ function App() {
     <Header/>  
     <main>
       Todo : <Outlet />
-      <Home />
     </main>
     <Footer/>
 

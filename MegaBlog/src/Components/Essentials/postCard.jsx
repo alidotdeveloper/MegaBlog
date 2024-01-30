@@ -24,7 +24,7 @@ function postCard({ id, title, fileId }) {
         <Link to={`/post/${id}`}>
             <div className={`className w-full bg-gray-100 rounded-xl p-4`}>
                 <div className='w-full justify-center mb-4'>
-                    <img src={ url} alt={title} className='rounded-xl'></img>
+                    <img src={url} alt={title} className='rounded-xl'></img>
                 </div>
                 <h2 className='text-xl font-bold'>{title}</h2>
         </div>

@@ -7,9 +7,9 @@ function Home() {
     const [posts, setPosts] = useState(null)
     useEffect(() => {
         appwriteService.getPosts(([])).then((post) => {
-            console.log("post",post)
+          
             if (post) {
-                console.log("post get sucessfully");
+        
                 setPosts(post.documents)
             } else {
                 console.log("no post recived")
@@ -36,9 +36,11 @@ function Home() {
         <div className='w-full y-8'>
             <div className='flex flex-wrap'>
                 
-                {console.log("posts here", posts)?.map((post) => (
-                    <div key={post.id} className='p-2 w-1/4'>
-                        <PostCard {...post} />
+                { posts?.map((post) => (
+                    <div key={post.$id} className='p-2 w-1/4'>
+                        <PostCard  fileId={post.feature_key}
+      id={post.$id}
+      title={post.TITLE} />
                     </div>
                 ))}
         </div>

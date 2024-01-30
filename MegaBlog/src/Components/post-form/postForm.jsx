@@ -72,7 +72,6 @@ function postForm({post}) {
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
-            console.log("watching changes:", value)
             if (name === "title") {
                 const slugValue = value.title ? slugGenerate(value.title) : '';
                 setValue('slug', slugValue, { shouldvalidate: true });
