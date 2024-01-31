@@ -42,15 +42,15 @@ export class Service {
     }
   }
 
-  async updatePost(slug, { title, content, feature_key, statusbar }) {
+  async updatePost(slug, { TITLE, CONTENT, feature_key, statusbar }) {
     try {
       return await this.databases.updateDocument(
-        conf.appwrite_db_id,
-        conf.appwrite_collection_id,
+        "657c891b0065fa7a6a86",
+        "657c89409e291365ef8e",
         slug,
         {
-          title,
-          content,
+          TITLE,
+          CONTENT,
           feature_key,
           statusbar,
         }
@@ -60,11 +60,12 @@ export class Service {
       throw error;
     }
   }
-  async deletePost({ slug }) {
+  async deletePost({ slug, postId }) {
     try {
       await this.databases.deleteDocument(
-        conf.appwrite_db_id,
-        conf.appwrite_collection_id,
+        "657c891b0065fa7a6a86",
+        "657c89409e291365ef8e",
+        postId,
         slug
       );
       return true;
@@ -99,13 +100,12 @@ export class Service {
   }
 
   // file upload
-  async uploadImage(file) {
+  async uploadImage(fileId) {
     try {
-      console.log("id oof bucket is:", conf.appwrite_bucket_id);
       return await this.storage.createFile(
         "657c8be4a1f331738cf3",
         ID.unique(),
-        file
+        fileId
       );
     } catch (error) {
       console.log("error in file uploading..." + error);
@@ -115,7 +115,7 @@ export class Service {
 
   async deleteImage(fileId) {
     try {
-      await this.storage.deleteFile(conf.appwrite_bucket_id, fileId);
+      await this.storage.deleteFile("657c8be4a1f331738cf3", fileId);
       return true;
     } catch (error) {
       console.log("error in file delete", error);

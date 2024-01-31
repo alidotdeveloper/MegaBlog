@@ -50,7 +50,7 @@ function post() {
   const isAuthor = posts && userData ? posts.user_id === userData.$id : false
   const deletePost = ((postId) => {
 
-    const delPost = appwriteService.deletePost(posts.feature_key)
+    const delPost = appwriteService.deletePost(posts.$id, console.log(posts.feature_key))
     if (delPost) {
       appwriteService.deleteImage(postId)
       navigate('/');
@@ -70,11 +70,12 @@ function post() {
           
 
           {  isAuthor&& (<div className='absoulte right-6 top-6'>
-            <Link to={`/edit/${posts.Id}`} />
-            <Button className='mr-3' bgColor="bg-red-500">
-              Edit
+            
+            <Button className='mr-3' bgColor="bg-red-500" >
+            <Link to={`/edit-post/${posts.$id}`} >
+              Edit </Link>
             </Button>
-            <Button bgColor="bg-red-500" onClick={deletePost} >
+            <Button bgColor="bg-red-500" onClick = {()=>{deletePost(posts.$id, posts.feature_key)} }  >
               Delete
             </Button>
           </div> 

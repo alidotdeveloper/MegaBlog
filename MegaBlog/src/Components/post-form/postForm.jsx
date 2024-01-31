@@ -20,14 +20,15 @@ function postForm({post}) {
     const submit = async (data) => {
         if (post) {
            
-            const file = data.image[0] ? await AppwriteService.uploadFile(data.image[0]) : null;
-           
+            const file = data.image[0] ? await AppwriteService.uploadImage(data.image[0]) : null;
+            console.log(file);
           
             if (file) {
                 AppwriteService.deleteImage(post.featuredimage);
             }
 
             const dbPost = await AppwriteService.updatePost(post.$id, {
+               
                 ...data,
                 feature_key: file ? file.$id : undefined,
             });
@@ -106,7 +107,7 @@ function postForm({post}) {
               />
               <RTE
                   label="Content :"
-                  className= "nline-block mb-1 pl-1 text-black"
+                  className= "inline-block mb-1 pl-1 text-black"
                   control={ control }
                   name="content"
                   defaultValue={getValues("content")}
@@ -124,7 +125,7 @@ function postForm({post}) {
                   {post && (
                       <div className='w-full mb-4'>
                            <img
-                            src={AppwriteService.getFilePreview(file.$id)}
+                            src={AppwriteService.getFilePreview(post.$id)}
                             alt={post.title}
                             className="rounded-lg"
                         />  
