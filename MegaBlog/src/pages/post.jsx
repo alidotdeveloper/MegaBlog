@@ -48,14 +48,24 @@ function post() {
     fetchpost();
   }, [navigate, slug])
   const isAuthor = posts && userData ? posts.user_id === userData.$id : false
-  const deletePost = ((postId) => {
-
-    const delPost = appwriteService.deletePost(posts.$id, console.log(posts.feature_key))
-    if (delPost) {
-      appwriteService.deleteImage(postId)
-      navigate('/');
+  const deletePost = async ({ postid }) => {
+    console.log("Deleting post:", postid);
+  
+    try {
+      // Log the document details before attempting deletion
+      const existingPost = await appwriteService.getPost(postid);
+      console.log("Existing post details:", existingPost);
+  
+      // Proceed with deletion
+      const delPost = await appwriteService.deletePost({ postid });
+      if (delPost) {
+        appwriteService.deleteImage(postid);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error("Error while deleting post:", error);
     }
-  })
+  };
 
   return posts ? (
     <div className='py8'>
@@ -67,15 +77,13 @@ function post() {
             alt={posts.TITLE}
             className="rounded-xl w-{s} "
           />
-          
-
           {  isAuthor&& (<div className='absoulte right-6 top-6'>
             
             <Button className='mr-3' bgColor="bg-red-500" >
             <Link to={`/edit-post/${posts.$id}`} >
               Edit </Link>
             </Button>
-            <Button bgColor="bg-red-500" onClick = {()=>{deletePost(posts.$id, posts.feature_key)} }  >
+            <Button bgColor="bg-red-500" onClick={() => { deletePost({ postid:slug })} }  >
               Delete
             </Button>
           </div> 

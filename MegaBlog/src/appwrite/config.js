@@ -60,13 +60,13 @@ export class Service {
       throw error;
     }
   }
-  async deletePost({ slug, postId }) {
+  async deletePost({ postid }) {
+    console.log("post id is:", postid);
     try {
       await this.databases.deleteDocument(
         "657c891b0065fa7a6a86",
         "657c89409e291365ef8e",
-        postId,
-        slug
+        postid
       );
       return true;
     } catch (error) {
