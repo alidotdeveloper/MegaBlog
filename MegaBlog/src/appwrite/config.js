@@ -55,8 +55,8 @@ export class Service {
           statusbar,
         }
       );
-    } catch (error) {
-      console.log("error while updating...", error);
+    } catch (err) {
+      console.log("error while updating...", err);
       throw error;
     }
   }
